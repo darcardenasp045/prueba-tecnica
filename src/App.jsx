@@ -8,19 +8,7 @@ function App() {
   const [imageUrl, setImageUrl] = useState()
 
   useEffect(()=>{
-    fetch(CAT_API_URL)
-    .then(response => response.json())
-    .then(data => {
-      const {fact} = data
-      setFact(fact)
-      
-    })
-   
-    
-  }, [] )
 
-  useEffect(()=>{
-    
     if(!fact) return
 
     const threeFirstWords = fact.split(' ', 3).join(' ')
@@ -29,17 +17,29 @@ function App() {
     fetch(`https://cataas.com/cat/says/${threeFirstWords}?fontSize=50&fontColor=red&json=true`)
     .then(res => res.json())
     .then(response => {
-      console.log(response)
+      
       const {_id } = response
-      console.log(_id)
+      
       setImageUrl(`https://cataas.com/cat/${_id}/says/${threeFirstWords}?fontSize=50&fontColor=red`)
     })
 
   },[ fact])
 
+  const hancleClick = () => {
+    fetch(CAT_API_URL)
+    .then(response => response.json())
+    .then(data => {
+      const {fact} = data
+      setFact(fact)
+      
+    })
+
+  }
+
   return (
     <main>
       <h1>App de Gatos</h1>
+      <button onClick={hancleClick}>Get new fact</button>
     {
       fact && <p>{fact}</p> 
     }
